@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Site Pessoal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Meu Site Pessoal</h1>
+        <nav>
+            <ul>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#portfolio">Portfólio</a></li>
+                <li><a href="#contact">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="about">
+        <h2>Sobre Mim</h2>
+        <p>Olá! Eu sou [Bento], um desenvolvedor web</p>
+    </section>
+
+    <section id="portfolio">
+        <h2>Portfólio</h2>
+        <div class="portfolio-item">
+            <h3>Casa</h3>
+            <p>Novo Projeto</p>
+            <button onclick="edita(this)">Editar</button>
+        </div>
+        <div class="portfolio-item">
+            <h3>Trabalho</h3>
+            <p>Novo Projeto</p>
+            <button onclick="edita(this)">Editar</button>
+        </div>
+        <form id="add-portfolio-item-form">
+            <h3>Adicionar Novo Item</h3>
+            <label for="new-title">Título:</label>
+            <input type="text" id="new-title" name="new-title" required>
+            <label for="new-description">Descrição:</label>
+            <input type="text" id="new-description" name="new-description" required>
+            <button type="button" onclick="addPortfolioItem()">Adicionar</button>
+        </form>
+    </section>
+
+    <section id="contact">
+        <h2>Contato</h2>
+        <form id="contact-form">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="button" onclick="openPhoneNumber()">Enviar</button>
+        </form>
+    </section>
+    
+    <script>
+    function openPhoneNumber() {
+        const phoneNumber = '+5511999999999'; // Substitua pelo número de telefone desejado
+        window.location.href = `tel:${phoneNumber}`;
+    }
+    </script>
+
+    <script src="script.js"></script>
+    </script>
+    
+</body>
+</html>
