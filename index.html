@@ -34,6 +34,7 @@
             <input type="text" id="new-description" name="new-description" required>
             <button type="button" onclick="addPortfolioItem()">Adicionar</button>
         </form>
+        <button type="button" onclick="savePortfolioItems()">Salvar Permanentemente</button>
     </section>
 
     <section id="contact">
@@ -123,6 +124,12 @@
 
         function loadPortfolioItems() {
             renderPortfolioItems();
+        }
+
+        function savePortfolioItems() {
+            const portfolioItems = getPortfolioItemsFromStorage();
+            savePortfolioItemsToStorage(portfolioItems);
+            alert('Itens do portfólio salvos permanentemente!');
         }
     </script>
 </body>
