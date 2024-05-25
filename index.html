@@ -20,21 +20,12 @@
 
     <section id="about">
         <h2>Sobre Mim</h2>
-        <p>Olá! Eu sou [Bento], um desenvolvedor web</p>
+        <p>Olá! Eu sou Bento, um desenvolvedor web</p>
     </section>
 
     <section id="portfolio">
         <h2>Portfólio</h2>
-        <div class="portfolio-item">
-            <h3>Casa</h3>
-            <p>Novo Projeto</p>
-            <button onclick="edita(this)">Editar</button>
-        </div>
-        <div class="portfolio-item">
-            <h3>Trabalho</h3>
-            <p>Novo Projeto</p>
-            <button onclick="edita(this)">Editar</button>
-        </div>
+        <div id="portfolio-items"></div>
         <form id="add-portfolio-item-form">
             <h3>Adicionar Novo Item</h3>
             <label for="new-title">Título:</label>
@@ -62,14 +53,77 @@
     </section>
     
     <script>
-    function openPhoneNumber() {
-        const phoneNumber = '+5511999999999'; // Substitua pelo número de telefone desejado
-        window.location.href = `tel:${phoneNumber}`;
-    }
-    </script>
+        document.addEventListener('DOMContentLoaded', loadPortfolioItems);
 
-    <script src="script.js"></script>
+        function openPhoneNumber() {
+            const phoneNumber = '+5511999999999'; // Substitua pelo número de telefone desejado
+            window.location.href = `tel:${phoneNumber}`;
+        }
+
+        function addPortfolioItem() {
+            const title = document.getElementById('new-title').value;
+            const description = document.getElementById('new-description').value;
+
+            const newItem = {
+                title: title,
+                description: description
+            };
+
+            const portfolioItems = getPortfolioItemsFromStorage();
+            portfolioItems.push(newItem);
+            savePortfolioItemsToStorage(portfolioItems);
+            renderPortfolioItems();
+        }
+
+        function editPortfolioItem(button) {
+            const itemDiv = button.parentElement;
+            const title = prompt('Editar Título', itemDiv.querySelector('h3').textContent);
+            const description = prompt('Editar Descrição', itemDiv.querySelector('p').textContent);
+
+            if (title !== null && description !== null) {
+                const portfolioItems = getPortfolioItemsFromStorage();
+                const index = Array.from(itemDiv.parentElement.children).indexOf(itemDiv);
+
+                portfolioItems[index] = {
+                    title: title,
+                    description: description
+                };
+
+                savePortfolioItemsToStorage(portfolioItems);
+                renderPortfolioItems();
+            }
+        }
+
+        function getPortfolioItemsFromStorage() {
+            const portfolioItems = localStorage.getItem('portfolioItems');
+            return portfolioItems ? JSON.parse(portfolioItems) : [];
+        }
+
+        function savePortfolioItemsToStorage(portfolioItems) {
+            localStorage.setItem('portfolioItems', JSON.stringify(portfolioItems));
+        }
+
+        function renderPortfolioItems() {
+            const portfolioItems = getPortfolioItemsFromStorage();
+            const portfolioContainer = document.getElementById('portfolio-items');
+            portfolioContainer.innerHTML = '';
+
+            portfolioItems.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('portfolio-item');
+                itemDiv.innerHTML = `
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <button onclick="editPortfolioItem(this)">Editar</button>
+                `;
+
+                portfolioContainer.appendChild(itemDiv);
+            });
+        }
+
+        function loadPortfolioItems() {
+            renderPortfolioItems();
+        }
     </script>
-    
 </body>
 </html>
