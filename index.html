@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Site Pessoal</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        footer {
+            margin-top: 50px; /* Adicionando espaço extra no topo do rodapé */
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -20,7 +25,13 @@
 
     <section id="about">
         <h2>Sobre Mim</h2>
-        <p>Olá! Eu sou Bento, um desenvolvedor web</p>
+        <p>Há muito tempo, em uma pequena cidade cercada por colinas verdejantes, um jovem chamado Wallacy descobriu sua paixão pela tecnologia. Desde tenra idade, ele estava fascinado com computadores e como eles podiam criar mundos inteiros com apenas um clique.
+
+            Seu amor pela tecnologia só cresceu com o tempo. Ele passava horas explorando a vasta internet, aprendendo tudo o que podia sobre desenvolvimento web, programação e design. Cada linha de código era uma nova aventura, e ele mergulhava de cabeça em cada desafio que encontrava.
+            
+            Com determinação e perseverança, Wallacy transformou sua paixão em profissão. Ele se tornou um desenvolvedor web habilidoso, criando sites e aplicativos que cativavam e inspiravam. Cada projeto era uma oportunidade de criar algo único, algo que pudesse impactar positivamente a vida das pessoas.
+            
+            Hoje, Wallacy continua sua jornada no mundo da tecnologia, sempre em busca de novos desafios e oportunidades para crescer. Seu objetivo é usar sua habilidade para criar experiências digitais excepcionais que tragam alegria, utilidade e beleza para o mundo online</p>
     </section>
 
     <section id="portfolio">
@@ -32,42 +43,40 @@
             <input type="text" id="new-title" name="new-title" required>
             <label for="new-description">Descrição:</label>
             <input type="text" id="new-description" name="new-description" required>
+            <label for="new-city">Cidade:</label>
+            <input type="text" id="new-city" name="new-city" required>
+            <label for="new-state">Estado:</label>
+            <input type="text" id="new-state" name="new-state" required>
             <button type="button" onclick="addPortfolioItem()">Adicionar</button>
         </form>
-        <button type="button" onclick="savePortfolioItems()">Salvar Permanentemente</button>
+        <button type="button" onclick="savePortfolioItems()">Salvar</button>
     </section>
 
     <section id="contact">
-        <h2>Contato</h2>
-        <form id="contact-form">
-            <label for="name">Nome:</label>
-            <input type="text" id="name" name="name" required>
-            
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            
+        <h2>Comentario</h2>
+        <form id="contact-form" onsubmit="sendWhatsApp(); return false;">
+            <label for="phone">Número de Telefone:</label>
+            <input type="text" id="phone" name="phone" required>
             <label for="message">Mensagem:</label>
-            <textarea id="message" name="message" required></textarea>
-            
-            <button type="button" onclick="openPhoneNumber()">Enviar</button>
+            <textarea id="message" name="text" required></textarea>
+            <button type="submit">Enviar um comentario</button>
         </form>
     </section>
     
     <script>
         document.addEventListener('DOMContentLoaded', loadPortfolioItems);
 
-        function openPhoneNumber() {
-            const phoneNumber = '+5511999999999'; // Substitua pelo número de telefone desejado
-            window.location.href = `tel:${phoneNumber}`;
-        }
-
         function addPortfolioItem() {
             const title = document.getElementById('new-title').value;
             const description = document.getElementById('new-description').value;
+            const city = document.getElementById('new-city').value;
+            const state = document.getElementById('new-state').value;
 
             const newItem = {
                 title: title,
-                description: description
+                description: description,
+                city: city,
+                state: state
             };
 
             const portfolioItems = getPortfolioItemsFromStorage();
@@ -76,23 +85,11 @@
             renderPortfolioItems();
         }
 
-        function editPortfolioItem(button) {
-            const itemDiv = button.parentElement;
-            const title = prompt('Editar Título', itemDiv.querySelector('h3').textContent);
-            const description = prompt('Editar Descrição', itemDiv.querySelector('p').textContent);
-
-            if (title !== null && description !== null) {
-                const portfolioItems = getPortfolioItemsFromStorage();
-                const index = Array.from(itemDiv.parentElement.children).indexOf(itemDiv);
-
-                portfolioItems[index] = {
-                    title: title,
-                    description: description
-                };
-
-                savePortfolioItemsToStorage(portfolioItems);
-                renderPortfolioItems();
-            }
+        function removePortfolioItem(index) {
+            const portfolioItems = getPortfolioItemsFromStorage();
+            portfolioItems.splice(index, 1);
+            savePortfolioItemsToStorage(portfolioItems);
+            renderPortfolioItems();
         }
 
         function getPortfolioItemsFromStorage() {
@@ -109,13 +106,15 @@
             const portfolioContainer = document.getElementById('portfolio-items');
             portfolioContainer.innerHTML = '';
 
-            portfolioItems.forEach(item => {
+            portfolioItems.forEach((item, index) => {
                 const itemDiv = document.createElement('div');
                 itemDiv.classList.add('portfolio-item');
                 itemDiv.innerHTML = `
                     <h3>${item.title}</h3>
                     <p>${item.description}</p>
-                    <button onclick="editPortfolioItem(this)">Editar</button>
+                    <p>Cidade: ${item.city}</p>
+                    <p>Estado: ${item.state}</p>
+                    <button onclick="removePortfolioItem(${index})">Remover</button>
                 `;
 
                 portfolioContainer.appendChild(itemDiv);
@@ -130,6 +129,13 @@
             const portfolioItems = getPortfolioItemsFromStorage();
             savePortfolioItemsToStorage(portfolioItems);
             alert('Itens do portfólio salvos permanentemente!');
+        }
+
+        function sendWhatsApp() {
+            const phone = document.getElementById('phone').value;
+            const message = document.getElementById('message').value;
+            const url = `https://web.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
         }
     </script>
 </body>
