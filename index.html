@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendas e Consertos de Aparelhos</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function copiarPIX() {
+            var texto = document.getElementById("codigoPIX");
+            texto.select();
+            texto.setSelectionRange(0, 99999); // Para dispositivos móveis
+
+            document.execCommand("copy"); // Comando de cópia
+
+            // Exibir mensagem de confirmação
+            var mensagem = document.getElementById("mensagemCopiado");
+            mensagem.style.display = "block"; // Exibir mensagem
+            setTimeout(function () {
+                mensagem.style.display = "none"; // Esconder a mensagem após 2 segundos
+            }, 2000);
+        }
+
+        // Função para capturar a localização e exibir no Google Maps
+        function obterLocalizacao() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (posicao) {
+                    var latitude = posicao.coords.latitude;
+                    var longitude = posicao.coords.longitude;
+
+                    // Exibir o mapa com a localização
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: { lat: latitude, lng: longitude },
+                        zoom: 15
+                    });
+
+                    var marker = new google.maps.Marker({
+                        position: { lat: latitude, lng: longitude },
+                        map: map,
+                        title: "Sua Localização"
+                    });
+
+                    // Exibir as coordenadas da localização
+                    document.getElementById("localizacao").innerHTML =
+                        "Latitude: " + latitude + "<br>Longitude: " + longitude;
+                }, function () {
+                    alert("Não foi possível obter sua localização.");
+                });
+            } else {
+                alert("Geolocalização não é suportada por este navegador.");
+            }
+        }
+    </script>
+</head>
+
+<body onload="obterLocalizacao()"> <!-- Chama a função ao carregar a página -->
+    <header>
+        <div class="logo">
+            <h1>Aparelhos Soluções</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#produtos">Produtos</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="home">
+        <h2>Bem-vindo à Aparelhos Soluções</h2>
+        <p>Somos especialistas em vendas e consertos de aparelhos eletrônicos. Oferecemos uma ampla gama de produtos e
+            serviços para manter seus aparelhos sempre funcionando!</p>
+    </section>
+
+    <section id="produtos" class="produtos">
+        <h2>Produtos à Venda</h2>
+        <div class="product-list">
+            <div class="product">
+                <img src="./img/x.jpg" alt="Produto 1">
+                <h3>Iphone X 256gb</h3>
+                <p>Preço: R$ 1.399,99</p>
+                <!-- Link para o Mercado Pago -->
+                <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=ID_DO_PAGAMENTO_DO_MERCADO_PAGO"
+                    target="_blank">
+                    <button>Comprar</button>
+                </a>
+            </div>
+            <div class="product">
+                <img src="./img/Notebook.jpg" alt="Produto 2">
+                <h3>Notebook Gamer 512gb/12 ram</h3>
+                <p>Preço: R$ 2.599,99</p>
+                <!-- Link para o Mercado Pago -->
+                <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=ID_DO_PAGAMENTO_DO_MERCADO_PAGO"
+                    target="_blank">
+                    <button>Comprar</button>
+                </a>
+            </div>
+            <div class="product">
+                <img src="./img/Fone.jpg" alt="Produto 2">
+                <h3>Fone bluetooth</h3>
+                <p>Preço: R$ 20,99</p>
+                <!-- Link para o Mercado Pago -->
+                <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=ID_DO_PAGAMENTO_DO_MERCADO_PAGO"
+                    target="_blank">
+                    <button>Comprar</button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicos" class="servicos">
+        <h2>Serviços de Conserto</h2>
+        <p>Realizamos consertos rápidos e eficientes em diversos tipos de aparelhos eletrônicos, como:</p>
+        <ul>
+            <li>Smartphones</li>
+            <li>Tablets</li>
+            <li>Notebooks</li>
+        </ul>
+    </section>
+
+    <section id="pix" class="pix">
+        <h2>Pagamento por PIX</h2>
+        <ul>
+            <li>
+                <strong>Número do PIX:</strong>
+                <input type="text" value="17997081907" id="codigoPIX" readonly>
+            </li>
+            <li>
+                <button onclick="copiarPIX()">Copiar Código</button>
+            </li>
+        </ul>
+        <p id="mensagemCopiado">Código copiado com sucesso!</p>
+        <div class="numeroPIX">
+        </div>
+    </section>
+
+    <section id="contato" class="contato">
+        <h2>Entre em Contato</h2>
+        <p>Preencha o formulário abaixo para agendar um conserto ou tirar dúvidas:</p>
+        <form
+            action="https://wa.me/5517997381476?text=Olá!%20Gostaria%20de%20mais%20informações%20sobre%20os%20produtos%20e%20serviços%20oferecidos."
+            method="GET">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+            <label for="whatsapp">Número do WhatsApp:</label>
+            <input type="text" id="whatsapp" name="whatsapp" required>
+            <br>
+            <button type="submit">Enviar</button>
+            </br>
+        </form>
+    </section>
+
+    <section id="localizacao" class="localizacao">
+        <h2>Localização Atual</h2>
+        <p>Aqui está sua localização atual:</p>
+        <p id="localizacao">Carregando localização...</p>
+        <!-- Espaço para o mapa -->
+        <div id="map" style="height: 400px; width: 100%;"></div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Aparelhos Soluções | Todos os direitos reservados</p>
+    </footer>
+
+    <!-- Adicione a chave de API do Google Maps -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=obterLocalizacao">
+        </script>
+</body>
+
+</html>
